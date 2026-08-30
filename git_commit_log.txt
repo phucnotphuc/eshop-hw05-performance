@@ -1,0 +1,8 @@
+2702ccd  2026-08-30 10:12  hw5: main report, Task 2 AI analysis + misinterpretation hunt, audit, critique, README
+61523a9  2026-08-30 10:12  hw5: evidence - hardware (dxdiag host THIEUNAGG), resource timeline + samplers
+b77350c  2026-08-30 10:12  hw5: raw .jtl logs + HTML dashboards for Load/Stress/Spike/Soak
+5f25ecf  2026-08-30 09:39  hw5: add CPT proposal, agent skill, jtl analyzer, capture runbook
+5ab7999  2026-08-30 09:34  hw5: add Spike test plan (200 VU burst in 3s, hold 90s)
+33e8557  2026-08-30 09:34  hw5: add Stress test plan (ramp 0->300 VU over 180s)
+58a13f2  2026-08-30 09:34  hw5: add Load test plan (50 VU, 60s ramp, 10min) + jmx generator
+aa1a66e  2026-08-30 09:29  hw5: scaffold repo + master plan + CSV test data
