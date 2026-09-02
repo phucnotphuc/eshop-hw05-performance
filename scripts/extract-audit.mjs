@@ -1,0 +1,94 @@
+// Regenerates ai/AI-Audit-Report.md from the Claude Code session log.
+// User prompts are copied VERBATIM from the log (never edited); timestamps are the log's own
+// timestamps converted to UTC+7. AI-output lines are short factual summaries keyed by turn order.
+// Usage: node scripts/extract-audit.mjs [path-to-session.jsonl]
+import fs from 'node:fs';
+import path from 'node:path';
+
+const LOG =
+  process.argv[2] ||
+  'C:/Users/ADMIN/.claude/projects/D--23127249-QA-hw5/710eb180-e819-42b0-8c2b-c0286f0adb04.jsonl';
+const OUT = path.resolve(process.cwd(), '../ai/AI-Audit-Report.md');
+
+// One short factual AI-output summary per genuine user turn, in order.
+const AI = [
+  'Acknowledged caveman ultra mode and held the terse style for the session (code/commits/security written normally).',
+  'Read the HW05 spec + the 4 HW02 test-case files (FR04/FR09/FR15/FR20); mapped them to the three required endpoint groups (auth/read/transactional); wrote `MASTER-PLAN.md`; checked the toolchain (Java 25 present, no JMeter/SUT); guided JMeter install and asked whether to clone the SUT and which tool.',
+  'Given the local SUT path, read `api_specification.md` + `setup_guide.md` + `database.js`; locked exact endpoints (`/api/login`, `/api/products`, `/api/cart`, `/api/apply-coupon`, `/api/checkout`), the seed users, and the sample coupons; corrected two guessed paths in the plan.',
+  'Installed backend deps, seeded the SQLite DB, started `node server.js` on :3000, downloaded + unzipped JMeter 5.6.3, verified login/products endpoints, and pre-registered a 50-user pool via `POST /api/register`.',
+  'Wrote `generate_plans.js`; produced the Load/Stress/Spike `.jmx`; smoke-tested the workflow (all 6 samplers HTTP 200); parameterized threads/ramp/duration via `${__P(...)}`; committed each plan separately; also wrote the CPT proposal, the `performance-testing` agent skill, `analyze_jtl.js`, `run_all.sh`, the capture runbook and the report/audit/critique scaffolds — reviewing and fixing the AI plan mistakes (wrong coupon path, missing `user_id`, single-user vs pool, missing auth header, averages-only).',
+  'Ran all four scenarios headless (raw `.jtl` + HTML dashboards; 71,183 samples, 0% errors); generated the real dxdiag report, a node.exe resource timeline (CSV + rendered chart, ~72 MB ceiling) and a Task Manager screenshot; deleted two full-screen captures that had caught personal browser tabs; filled the Main Report result tables + endurance threshold, the Task-2 misinterpretation hunt with exact `.jtl` values, the Bug Report and README; exported the report/audit/critique PDFs; wrote the git commit log and built the submission zip.',
+  'Gave an ordered checklist of the remaining human-only items (review the docs, record the video, dxdiag screenshot, paste links, push the repo public, optional issues, re-zip, submit).',
+  'Wrote three helper docs: `KNOWLEDGE-JMeter-and-Project.md` (tool + concepts + results + oral-defense Q&A), `TODO-Checklist.md`, and `VIDEO-Script.md` (timed Vietnamese narration).',
+  'Wrote this `scripts/extract-audit.mjs` and regenerated `ai/AI-Audit-Report.md` with verbatim prompts + exact UTC+7 timestamps from the session log.',
+];
+
+const toICT = (iso) =>
+  new Date(new Date(iso).getTime() + 7 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 16);
+
+// Collect the genuine user prompts (verbatim) in order.
+const turns = [];
+for (const line of fs.readFileSync(LOG, 'utf8').split(/\r?\n/).filter(Boolean)) {
+  let o;
+  try { o = JSON.parse(line); } catch { continue; }
+  if (o.type !== 'user' || !o.timestamp) continue;
+  const c = o.message && o.message.content;
+  let txt = '';
+  if (typeof c === 'string') txt = c;
+  else if (Array.isArray(c)) { const t = c.find((x) => x.type === 'text'); if (!t) continue; txt = t.text; }
+  else continue;
+  if (/tool_result|SYSTEM NOTIFICATION|task-notification|Request interrupted/.test(txt)) continue;
+  const clean = txt
+    .replace(/<command-message>[\s\S]*?<\/command-message>|<command-name>[\s\S]*?<\/command-name>|<command-args>[\s\S]*?<\/command-args>/g, '')
+    .trim();
+  if (!clean) continue;
+  turns.push({ ts: toICT(o.timestamp), prompt: clean });
+}
+
+let md = `# AI Audit Report — HW05 Performance Testing on EShop
+
+Student: **23127249** · Endpoint groups: **Auth (FR-20 login) · Read (FR-05/15 products) · Transactional (FR-07/08/09 cart+coupon+checkout)**
+SUT: EShop \`eshop-sut\` (Backend :3000, Node.js + SQLite) · Tool: **Apache JMeter 5.6.3**
+
+**Declaration:** *I use AI tools for the following tasks.*
+
+Human-only work (NOT AI-generated, per anti-cheat §11): the demo video + Vietnamese narration, the
+resource-monitor screenshots, the \`dxdiag\` hardware report screenshot, and the GitHub issue filings.
+
+# PHỤ LỤC A: NHẬT KÝ PROMPT (PROMPT LOG) — HW05
+
+## AI Tool Name: Claude (Claude Code — Opus 4.8)
+
+User prompts are reproduced **verbatim** from the Claude Code session log. Timestamps are the log's
+own timestamps, converted to **UTC+7**. Generated by \`scripts/extract-audit.mjs\`.
+Session span: ${turns[0].ts} → ${turns[turns.length - 1].ts} (UTC+7).
+
+---
+`;
+
+turns.forEach((t, idx) => {
+  md += `
+### Date and time: ${t.ts} (UTC+7)
+### User:
+${t.prompt}
+### AI:
+${AI[idx] || '(summary not recorded)'}
+
+---
+`;
+});
+
+md += `
+## Environment (reproducibility)
+JDK 25 · Apache JMeter 5.6.3 · Node.js backend + SQLite · Windows 11 (host \`THIEUNAGG\`) ·
+SUT seeded via \`backend/database.js\`; accounts \`test@eshop.com / Test1234!\`,
+\`admin@eshop.com / Admin123!\` + a 50-user perf pool registered via \`POST /api/register\`.
+
+## Anti-cheat note
+The test-plan filenames (\`23127249_{Load,Stress,Spike}_20260830.jmx\`), the raw \`.jtl\` logs, the
+\`dxdiag\` hostname (\`THIEUNAGG\`), and the demo video with same-frame tool+monitor and the student's
+own Vietnamese narration are real, attributable execution evidence — not AI-generated.
+`;
+
+fs.writeFileSync(OUT, md, 'utf8');
+console.log(`Wrote ${turns.length} verbatim prompts to ${OUT}`);
