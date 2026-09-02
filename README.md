@@ -2,7 +2,7 @@
 
 **Tool:** Apache JMeter 5.6.3 · **AI:** Claude (Opus 4.8) · **SUT:** EShop (Node.js + SQLite)
 **Machine:** `ThieuNagg` (i5-12500H, 16 GB, Windows 11)
-**GitHub repo:** _<PASTE PUBLIC REPO LINK>_
+**GitHub repo:** https://github.com/phucnotphuc/eshop-hw05-performance
 **Demo video (unlisted, ≥6 min):** _<PASTE YOUTUBE LINK>_
 
 ## Self-Assessment

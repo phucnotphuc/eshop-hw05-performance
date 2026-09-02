@@ -3,6 +3,7 @@
 **Student ID:** 23127249 · **Tool:** Apache JMeter 5.6.3 · **AI:** Claude (Opus 4.8)
 **SUT:** EShop backend (Node.js + SQLite) — `http://localhost:3000`
 **Machine:** `ThieuNagg` — i5-12500H, 16 GB, Windows 11 (26200), JDK 25
+**GitHub repo:** https://github.com/phucnotphuc/eshop-hw05-performance
 **Demo video (unlisted):** _<PASTE YOUTUBE LINK>_
 
 ---
