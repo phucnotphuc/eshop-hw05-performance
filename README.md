@@ -3,7 +3,7 @@
 **Tool:** Apache JMeter 5.6.3 · **AI:** Claude (Opus 4.8) · **SUT:** EShop (Node.js + SQLite)
 **Machine:** `ThieuNagg` (i5-12500H, 16 GB, Windows 11)
 **GitHub repo:** https://github.com/phucnotphuc/eshop-hw05-performance
-**Demo video (unlisted, ≥6 min):** _<PASTE YOUTUBE LINK>_
+**Demo video (unlisted, ≥6 min):** https://youtu.be/TQvyZmTpIEE
 
 ## Self-Assessment
 
@@ -33,7 +33,7 @@
   12 min); CPU negligible. The limiter was the JMeter client + think-time, not the server.
 - **Bugs / performance issues:** 0 functional/perf failures under load; 3 optional
   performance-adjacent observations logged (`ai/Bug-Report.md`).
-- **Demo video:** _<PASTE UNLISTED YOUTUBE LINK>_.
+- **Demo video:** https://youtu.be/TQvyZmTpIEE.
 
 ## Layout
 
